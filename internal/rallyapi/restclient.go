@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"net/url"
 
-	"com.github.niedch/internal/conf"
+	"github.com/niedch/rally-puller/internal/conf"
 )
 
 type RestClient struct {
