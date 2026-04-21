@@ -3,11 +3,20 @@ package cmd
 import (
 	"context"
 	"log"
+	"os"
+	"path/filepath"
 
+	"github.com/niedch/rally-puller/internal/branch"
 	"github.com/niedch/rally-puller/internal/conf"
 	"github.com/niedch/rally-puller/internal/markdown"
 	"github.com/niedch/rally-puller/internal/rallyapi"
 	"github.com/spf13/cobra"
+)
+
+var (
+	filename string
+	defect   string
+	cwd      string
 )
 
 // pullCmd represents the pull command
@@ -21,36 +30,39 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		ctx := context.Background();
+		ctx := context.Background()
 		config := conf.Load()
-		
-		client := rallyapi.NewRestClient(config);
 
-		query := rallyapi.NewQueryBuilder().WithFormattedId("DE58840")
+		client := rallyapi.NewRestClient(config)
+
+		defectID, err := branch.ResolveDefectID(defect, cwd)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		query := rallyapi.NewQueryBuilder().WithFormattedId(defectID)
 		defects, err := client.FindDefects(ctx, *query)
 		if err != nil {
-			log.Fatal(err);
+			log.Fatal(err)
 		}
 
 		out, err := markdown.ConvertToMarkdown(defects[0].Description)
 		if err != nil {
-			log.Fatal(err);
+			log.Fatal(err)
 		}
 
-		log.Println(out)
+		outPath := filepath.Join(cwd, filename)
+		if err := os.WriteFile(outPath, []byte(out), 0o644); err != nil {
+			log.Fatal(err)
+		}
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(pullCmd)
 
-	// Here you will define your flags and configuration settings.
+	pullCmd.Flags().StringVarP(&filename, "filename", "f", "task.md", "Where the markdown file should be written to!")
+	pullCmd.Flags().StringVarP(&defect, "defect", "d", "", "Rally defect FormattedID (e.g. DE123); if omitted, the current git branch is scanned for DE<number>")
 
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	pullCmd.PersistentFlags().String("filename", "task.md", "Where the markdown file should be written to!")
-	pullCmd.PersistentFlags().String("defect", "", "Where the markdown file should be written to!")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
+	pullCmd.PersistentFlags().StringVarP(&cwd, "cwd", "c", "", "Working directory")
 }
