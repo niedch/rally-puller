@@ -3,5 +3,8 @@ go="latest"
 "go:github.com/spf13/cobra-cli" = "latest"
 
 [tasks.test]
+sources = ["**/*.go"]
 run = "go test -v ./..."
 
+[tasks.watcher]
+run = "mise watch test"
