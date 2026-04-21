@@ -4,9 +4,9 @@ import (
 	"context"
 	"log"
 
-	"com.github.niedch/internal/conf"
-	"com.github.niedch/internal/markdown"
-	"com.github.niedch/internal/rallyapi"
+	"github.com/niedch/rally-puller/internal/conf"
+	"github.com/niedch/rally-puller/internal/markdown"
+	"github.com/niedch/rally-puller/internal/rallyapi"
 	"github.com/spf13/cobra"
 )
 

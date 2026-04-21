@@ -1,10 +1,6 @@
-/*
-Copyright © 2026 NAME HERE <EMAIL ADDRESS>
-
-*/
 package main
 
-import "com.github.niedch/cmd"
+import "github.com/niedch/rally-puller/cmd"
 
 func main() {
 	cmd.Execute()

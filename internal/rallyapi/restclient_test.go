@@ -1,13 +1,13 @@
 package rallyapi
 
 import (
-	"com.github.niedch/internal/conf"
 	"context"
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
+	"github.com/niedch/rally-puller/internal/conf"
 	"github.com/stretchr/testify/assert"
 )
 

@@ -1,4 +1,4 @@
-module com.github.niedch
+module github.com/niedch/rally-puller
 
 go 1.26.2
 
