@@ -31,9 +31,9 @@ func TestGetDefects(t *testing.T) {
 	defer server.Close()
 
 	config := &conf.Config{
-		CONNECTALL_RALLY_URL:     server.URL,
-		CONNECTALL_WORKSPACE_ID:  "workspace-id",
-		CONNECTALL_RALLY_API_KEY: "zsessionid",
+		RALLY_URL:     server.URL,
+		WORKSPACE_ID:  "workspace-id",
+		RALLY_API_KEY: "zsessionid",
 	}
 	client := NewRestClient(config)
 
@@ -89,9 +89,9 @@ func TestPutDefect(t *testing.T) {
 	defer server.Close()
 
 	config := &conf.Config{
-		CONNECTALL_RALLY_URL:     server.URL,
-		CONNECTALL_WORKSPACE_ID:  "workspace-id",
-		CONNECTALL_RALLY_API_KEY: "zsessionid",
+		RALLY_URL:     server.URL,
+		WORKSPACE_ID:  "workspace-id",
+		RALLY_API_KEY: "zsessionid",
 	}
 	client := NewRestClient(config)
 
@@ -117,9 +117,9 @@ func TestPutDefect_ErrorResponse(t *testing.T) {
 	defer server.Close()
 
 	config := &conf.Config{
-		CONNECTALL_RALLY_URL:     server.URL,
-		CONNECTALL_WORKSPACE_ID:  "workspace-id",
-		CONNECTALL_RALLY_API_KEY: "zsessionid",
+		RALLY_URL:     server.URL,
+		WORKSPACE_ID:  "workspace-id",
+		RALLY_API_KEY: "zsessionid",
 	}
 	client := NewRestClient(config)
 
@@ -155,9 +155,9 @@ func TestPutDefect_WithRallyErrors(t *testing.T) {
 	defer server.Close()
 
 	config := &conf.Config{
-		CONNECTALL_RALLY_URL:     server.URL,
-		CONNECTALL_WORKSPACE_ID:  "workspace-id",
-		CONNECTALL_RALLY_API_KEY: "zsessionid",
+		RALLY_URL:     server.URL,
+		WORKSPACE_ID:  "workspace-id",
+		RALLY_API_KEY: "zsessionid",
 	}
 	client := NewRestClient(config)
 

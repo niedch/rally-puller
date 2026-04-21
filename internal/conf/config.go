@@ -11,10 +11,9 @@ import (
 )
 
 type Config struct {
-	CONNECTALL_RALLY_URL      string `koanf:"CONNECTALL_RALLY_URL"`
-	CONNECTALL_RALLY_API_KEY  string `koanf:"CONNECTALL_RALLY_API_KEY"`
-	CONNECTALL_WORKSPACE_ID   string `koanf:"CONNECTALL_WORKSPACE_ID"`
-	CONNECTALL_CUSTOM_ATTR_ID string `koanf:"CONNECTALL_CUSTOM_ATTR_ID"`
+	RALLY_URL     string `koanf:"RALLY_URL"`
+	RALLY_API_KEY string `koanf:"RALLY_API_KEY"`
+	WORKSPACE_ID  string `koanf:"WORKSPACE_ID"`
 }
 
 func Load() *Config {
@@ -35,9 +34,8 @@ func Load() *Config {
 
 func loadDefaults(k *koanf.Koanf) {
 	k.Load(confmap.Provider(map[string]any{
-		"CONNECTALL_RALLY_URL":      "https://rally1.rallydev.com/slm/webservice/v2.0",
-		"CONNECTALL_WORKSPACE_ID":   "836073279859",
-		"CONNECTALL_CUSTOM_ATTR_ID": "836082869309",
+		"RALLY_URL": "https://rally1.rallydev.com/slm/webservice/v2.0",
+		"WORKSPACE_ID": "41529001",
 	}, "."), nil)
 }
 
