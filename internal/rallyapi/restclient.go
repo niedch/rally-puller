@@ -19,9 +19,10 @@ type RestClient struct {
 
 func NewRestClient(config *conf.Config) *RestClient {
 	return &RestClient{
-		baseURL:     config.CONNECTALL_RALLY_URL,
-		workspaceId: config.CONNECTALL_WORKSPACE_ID,
-		zSessionId:  config.CONNECTALL_RALLY_API_KEY,
+		baseURL:     config.RALLY_URL,
+		zSessionId:  config.RALLY_API_KEY,
+
+		workspaceId: config.WORKSPACE_ID,
 	}
 }
 
