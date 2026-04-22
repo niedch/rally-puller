@@ -8,26 +8,52 @@ import (
 	"strings"
 )
 
-// Rally defect formatted IDs are typically DE followed by digits.
-var defectIDInBranch = regexp.MustCompile(`(?i)\bDE[0-9]+\b`)
+// TicketType represents the type of Rally ticket
+type TicketType string
 
-func ResolveDefectID(flagDefect, workDir string) (string, error) {
-	if s := strings.TrimSpace(flagDefect); s != "" {
-		return s, nil
-	}
-	branch, err := currentGitBranch(workDir)
-	if err != nil {
-		return "", fmt.Errorf("no defect set (-d) and could not read git branch: %w", err)
-	}
-	id := defectIDFromBranchName(branch)
-	if id == "" {
-		return "", fmt.Errorf("no defect set (-d) and branch %q has no defect ID (expected DE<number>, case-insensitive)", branch)
-	}
-	return id, nil
+const (
+	TicketTypeDefect TicketType = "Defect"
+	TicketTypeStory  TicketType = "HierarchicalRequirement" // Rally's internal type for Stories/User Stories
+)
+
+// Ticket represents a resolved Rally ticket
+type Ticket struct {
+	ID   string
+	Type TicketType
 }
 
-func defectIDFromBranchName(branch string) string {
-	m := defectIDInBranch.FindString(branch)
+// Rally ticket formatted IDs are typically DE, US, or S followed by digits.
+var ticketIDInBranch = regexp.MustCompile(`(?i)\b(?:DE|US|S)[0-9]+\b`)
+
+func ResolveTicket(flagTicket, workDir string) (*Ticket, error) {
+	var id string
+	if s := strings.TrimSpace(flagTicket); s != "" {
+		id = strings.ToUpper(s)
+	} else {
+		branch, err := currentGitBranch(workDir)
+		if err != nil {
+			return nil, fmt.Errorf("no ticket set (-d) and could not read git branch: %w", err)
+		}
+
+		id = ticketIDFromBranchName(branch)
+		if id == "" {
+			return nil, fmt.Errorf("no ticket set (-d) and branch %q has no ticket ID (expected DE<number>, US<number>, or S<number>, case-insensitive)", branch)
+		}
+	}
+
+	ticketType := TicketTypeStory
+	if strings.HasPrefix(id, "DE") {
+		ticketType = TicketTypeDefect
+	}
+
+	return &Ticket{
+		ID:   id,
+		Type: ticketType,
+	}, nil
+}
+
+func ticketIDFromBranchName(branch string) string {
+	m := ticketIDInBranch.FindString(branch)
 	if m == "" {
 		return ""
 	}

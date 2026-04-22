@@ -35,13 +35,13 @@ to quickly create a Cobra application.`,
 
 		client := rallyapi.NewRestClient(config)
 
-		defectID, err := branch.ResolveDefectID(defect, cwd)
+		ticket, err := branch.ResolveTicket(defect, cwd)
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		query := rallyapi.NewQueryBuilder().WithFormattedId(defectID)
-		defects, err := client.FindDefects(ctx, *query)
+		query := rallyapi.NewQueryBuilder().WithFormattedId(ticket.ID)
+		defects, err := client.FindTickets(ctx, string(ticket.Type), *query)
 		if err != nil {
 			log.Fatal(err)
 		}
