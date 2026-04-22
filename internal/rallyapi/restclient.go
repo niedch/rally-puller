@@ -27,7 +27,11 @@ func NewRestClient(config *conf.Config) *RestClient {
 }
 
 func (r *RestClient) FindDefects(ctx context.Context, queryBuilder QueryBuilder) ([]Defect, error) {
-	baseUrl := fmt.Sprintf("%s/%s", r.baseURL, "defect")
+	return r.FindTickets(ctx, "defect", queryBuilder)
+}
+
+func (r *RestClient) FindTickets(ctx context.Context, ticketType string, queryBuilder QueryBuilder) ([]Defect, error) {
+	baseUrl := fmt.Sprintf("%s/%s", r.baseURL, ticketType)
 	queryParams, headers := r.createCommons(queryBuilder)
 
 	log.Printf("Fetching from '%s'\n", baseUrl)
